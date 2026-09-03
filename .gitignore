@@ -1,1 +1,13 @@
 # Archivos ignorados por Git 
+# Node / Javascript
+node_modules/
+npm-debug.log
+
+# Entornos y secretos
+.env
+.env.local
+
+# Archivos de sistema o IDEs
+.vscode/
+.DS_Store
+Thumbs.db
