@@ -1,13 +1,19 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 15-10-2026 a las 19:10:57
--- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- ============================================================
+-- UNIVERSITY RESEARCH PLATFORM
+-- Creación y selección de la base de datos
+-- ============================================================
+
+DROP DATABASE IF EXISTS `university_research_platform`;
+
+CREATE DATABASE `university_research_platform`
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
+
+USE `university_research_platform`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
 START TRANSACTION;
 SET time_zone = "+00:00";
 
