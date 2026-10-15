@@ -1,0 +1,7 @@
+{
+  "name": "research-university",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
