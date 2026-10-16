@@ -1,3 +1,7 @@
+/*este sql es para importar por si schema.sql sigue sin funcionar directamente.*/
+
+
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
