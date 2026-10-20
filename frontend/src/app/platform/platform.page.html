@@ -1,0 +1,127 @@
+<!-- Presenta acceso de demostración, navegación y pantallas según el rol y los endpoints. -->
+<ion-content>
+  @if (section === 'login') {
+    <div class="login-layout">
+      <section class="brand-panel">
+        <h1>◈ URPMP</h1>
+        <p>University Research<br>Project Management<br>Platform</p>
+        <div class="campus" aria-hidden="true"><span>◈</span></div>
+        <p class="slogan">Investiga hoy,<br>construye un mejor mañana.</p>
+      </section>
+      <section class="login-panel">
+        <form class="login-card" (ngSubmit)="enterDemo()">
+          <h2>Bienvenido de nuevo</h2><p>Continúa con tu investigación.</p>
+          <label for="username">Usuario</label>
+          <input id="username" name="username" autocomplete="username" [(ngModel)]="username" placeholder="Tu nombre de usuario">
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" [(ngModel)]="password" placeholder="Tu contraseña">
+          <p class="muted">¿Necesitas una cuenta o restablecer tu contraseña? Contacta a Coordinación.</p>
+          <div class="demo-box"><strong>Vista previa sin conexión</strong><p>No ingreses credenciales reales. Selecciona un rol para explorar las pantallas.</p>
+            <label for="demo-role">Rol de demostración</label><select id="demo-role" name="role" [(ngModel)]="role">@for (item of roles; track item.value) { <option [value]="item.value">{{ item.label }}</option> }</select>
+          </div>
+          <button class="primary wide" type="submit">Entrar a la demostración →</button>
+        </form>
+      </section>
+    </div>
+  } @else {
+    <div class="app-layout">
+      <aside [class.open]="menuOpen">
+        <a class="brand" routerLink="/app/dashboard">◈ URPMP</a>
+        <small>GESTIÓN DE INVESTIGACIÓN</small>
+        <nav aria-label="Navegación principal" (click)="menuOpen = false">
+          <a routerLink="/app/dashboard" [class.active]="section === 'dashboard'">◇ Inicio</a>
+          @for (item of menu; track item.key) { <a [routerLink]="['/app', item.key]" [class.active]="section === item.key">◇ {{ item.title }}</a> }
+          <a routerLink="/app/assistant" [class.active]="section === 'assistant'">◇ Asistente de IA</a>
+        </nav>
+        <button class="logout" type="button" (click)="logout()">↪ Salir de la demostración</button>
+      </aside>
+      <main>
+        <header class="topbar">
+          <button type="button" class="menu-button" (click)="menuOpen = !menuOpen" aria-label="Abrir menú" [attr.aria-expanded]="menuOpen">☰</button>
+          <span class="breadcrumb">Plataforma de investigación / {{ view?.title || (section === 'assistant' ? 'Asistente de IA' : 'Inicio') }}</span>
+          <div class="profile"><span class="avatar">JM</span><div><strong>Jazmín Montes</strong><select aria-label="Cambiar rol de demostración" [(ngModel)]="role" (ngModelChange)="changeRole()">@for (item of roles; track item.value) { <option [value]="item.value">{{ item.label }}</option> }</select></div></div>
+        </header>
+        <div class="demo-strip">Vista previa · {{ roleLabel }} · Datos de ejemplo, sin conexión a la API</div>
+        @if (notice) { <div class="notice" role="status">{{ notice }} <button type="button" (click)="notice = ''" aria-label="Cerrar aviso">×</button></div> }
+        @if (!allowed) {
+          <section class="panel"><h1>Vista no disponible para este rol</h1><p>Cambia el rol de demostración para explorar esta sección.</p><a routerLink="/app/dashboard">Volver al inicio</a></section>
+        } @else if (section === 'dashboard') {
+          <div class="heading"><div><h1>¡Hola, Jazmín!</h1><p>Un vistazo a tu actividad de investigación.</p></div><span class="date">20 de octubre de 2026</span></div>
+          <section class="stats">
+            @for (item of (role === 'evaluator' ? ['Propuestas asignadas','Evaluaciones pendientes','Evaluaciones emitidas','Fuentes disponibles'] : ['Propuestas','Proyectos activos','Actividades pendientes','Documentos']); track item; let i = $index) {
+              <a class="stat" [routerLink]="['/app', role === 'evaluator' ? (i < 3 ? 'evaluations' : 'institutional') : ['proposals','projects','activities','documents'][i]]"><span>▣</span><strong>{{ (role === 'evaluator' ? [2, 1, 1, 2] : [3, 2, 3, 2])[i] }}</strong><p>{{ item }}</p></a>
+            }
+          </section>
+          <div class="dashboard-grid"><section class="panel"><h2>Actividad reciente</h2><div class="timeline"><article><strong>Propuesta enviada a revisión</strong><p>IA para el aprendizaje personalizado</p><small>20 oct 2026 · 09:10</small></article><article><strong>Se solicitó corregir una propuesta</strong><p>Materiales sustentables para construcción local</p><small>18 oct 2026 · 13:20</small></article><article><strong>Documento actualizado</strong><p>Plan de investigación · Versión 2</p><small>17 oct 2026 · 10:30</small></article></div></section>
+            <section class="panel"><h2>{{ role === 'evaluator' ? 'Por evaluar' : 'Próximas entregas' }}</h2><a class="task" [routerLink]="['/app', role === 'evaluator' ? 'evaluations' : 'activities', 1]"><strong>{{ role === 'evaluator' ? 'Energía renovable' : 'Revisión de literatura' }}</strong><p>23 oct 2026</p><span class="badge warning">Próxima entrega</span></a><a class="task" [routerLink]="['/app', role === 'evaluator' ? 'evaluations' : 'activities', 2]"><strong>{{ role === 'evaluator' ? 'Impacto social de la IA' : 'Borrador de metodología' }}</strong><p>25 oct 2026</p></a></section></div>
+        } @else if (section === 'assistant') {
+          <div class="heading"><div><h1>Asistente de IA</h1><p>Consulta información de investigación y fuentes institucionales autorizadas.</p></div></div>
+          <section class="panel chat"><div class="assistant-intro"><span class="assistant-symbol">◈</span><h2>¿En qué puedo ayudarte?</h2><p>Puedo resumir, explicar y localizar información en tus fuentes disponibles.</p><p class="muted">La respuesta y las citas reales se mostrarán al conectar el servicio.</p><a routerLink="/app/institutional">Consultar fuentes institucionales →</a></div>
+          @for (message of messages; track $index) { <article class="message" [class.mine]="message.author === 'Tú'"><strong>{{ message.author }}</strong><p>{{ message.text }}</p></article> }
+          <form class="chat-form" (ngSubmit)="ask()"><select name="action" aria-label="Tipo de consulta" [(ngModel)]="assistantAction"><option value="ask">Preguntar</option><option value="summarize">Resumir</option><option value="explain">Explicar</option><option value="locate">Localizar</option></select><input name="question" aria-label="Pregunta" [(ngModel)]="question" placeholder="Escribe tu pregunta…" required><button class="primary" type="submit">Enviar →</button></form></section>
+        } @else if (view) {
+          @if (selected) {
+            <a class="back" [routerLink]="['/app', section]">← Volver a {{ view.title.toLowerCase() }}</a>
+            <div class="heading"><div><h1>{{ selected.cells[0] }}</h1><p>{{ view.description }}</p></div><span class="badge">{{ roleLabel }}</span></div>
+            <div class="tabs">@for (item of tabs; track item) { <button type="button" [class.active]="tab === item" (click)="setTab(item)">{{ item }}</button> }</div>
+            @if (tab === 'Información') {
+              <section class="panel"><h2>Información general</h2><dl class="details">@for (column of view.columns; track column; let i = $index) { <div><dt>{{ column }}</dt><dd>{{ selected.cells[i] }}</dd></div> }</dl>
+              @if (section === 'proposals') { <h3>Descripción</h3><p>Investigación orientada a resolver necesidades de la comunidad mediante métodos y herramientas sustentados en evidencia.</p><h3>Objetivos</h3><p>Analizar el problema, desarrollar una propuesta y evaluar sus resultados.</p>@if (selected.id === 2) { <div class="observation"><strong>Observaciones del investigador</strong><p>Delimitar la población de estudio y actualizar las fuentes bibliográficas.</p></div> } }
+              @if (section === 'projects' || section === 'monitoring') { <h3>Avance del proyecto</h3><progress max="100" [value]="selected.id === 2 ? 75 : 50"></progress><p>{{ selected.id === 2 ? 3 : 2 }} actividades aceptadas de 4 · {{ selected.id === 2 ? 75 : 50 }} %</p><small>El avance se calcula a partir de actividades completadas y aceptadas.</small> }
+              @if (section === 'activities') { <h3>Indicador de fecha</h3><span class="badge warning">{{ selected.id === 1 ? 'Próxima a vencer' : 'Normal' }}</span><p>Enviar una actividad a revisión no exige adjuntar evidencia.</p> }
+              @if (section === 'milestones') { <p>Un hito se marca como alcanzado solo cuando todas sus actividades han sido completadas y aceptadas.</p> }
+              @if (section === 'documents') { <p>Bloqueado impide que un estudiante elimine el documento. Restringido permite su consulta únicamente a investigadores participantes.</p> }
+              @if (section === 'participants') { <p>Al retirar a un integrante se conserva su historial. Sus actividades pendientes deben reasignarse.</p> }
+              <div class="actions">@for (item of detailActions; track item.endpoint) { <button type="button" class="secondary" (click)="openForm(item)">{{ item.label }}</button> } @if (section === 'documents' || section === 'institutional') { <button class="primary" type="button" (click)="download()">↓ Descargar archivo</button> }</div></section>
+            } @else if (tab === 'Historial') {
+              <section class="panel"><h2>Historial de cambios</h2><div class="timeline"><article><strong>Registro creado</strong><p>Jazmín Montes · 10 oct 2026</p></article><article><strong>Información actualizada</strong><p>{{ selected.cells[0] }} · 18 oct 2026</p></article></div><small>Solo consulta. Los eventos se registrarán automáticamente en el servidor.</small></section>
+            } @else if (tab === 'Evaluaciones') {
+              <section class="panel"><h2>Revisiones y evaluaciones</h2><span class="badge warning">Cambios solicitados</span><h3>Dra. Laura Méndez</h3><p>Delimitar el alcance y actualizar la bibliografía antes de reenviar.</p><small>18 oct 2026 · Información de ejemplo</small><p><a routerLink="/app/evaluations">Ver evaluaciones →</a></p></section>
+            } @else if (tab === 'Versiones' || tab === 'Evidencias') {
+              <section class="panel"><h2>{{ tab }}</h2><div class="file-row"><div><strong>{{ tab === 'Versiones' ? selected.cells[2] + ' · ' + selected.cells[0] : 'Revisión de literatura.pdf' }}</strong><p>Jazmín Montes · 17 oct 2026</p></div><button class="secondary" type="button" (click)="download()">↓ Descargar</button></div>@if (tab === 'Versiones') { <div class="file-row"><div><strong>Versión 1 · {{ selected.cells[0] }}</strong><p>Jazmín Montes · 10 oct 2026</p></div><button class="secondary" type="button" (click)="download()">↓ Descargar</button></div> }</section>
+            } @else if (tab === 'Propuesta de origen') {
+              <section class="panel"><h2>Propuesta de origen</h2><h3>Materiales sustentables para construcción local</h3><p>Autor: Jazmín Montes · Responsable: Dr. Carlos Ruiz</p><p>El proyecto se crea automáticamente al aprobar la evaluación formal.</p><a routerLink="/app/proposals/3">Consultar propuesta →</a></section>
+            } @else {
+              <section class="panel"><h2>{{ tab }} del proyecto</h2><p>Consulta los registros y acciones disponibles para tu rol.</p><a [routerLink]="['/app', tab === 'Equipo' ? 'participants' : tab === 'Hitos' ? 'milestones' : tab === 'Documentos' ? 'documents' : 'activities']">Abrir {{ tab.toLowerCase() }} →</a></section>
+            }
+          } @else {
+            <div class="heading"><div><h1>{{ view.title }}</h1><p>{{ view.description }}</p></div>@if (createAction) { <button type="button" class="primary" (click)="openForm(createAction)">＋ {{ createAction.label }}</button> }</div>
+            @if (scoped) { <div class="project-picker"><label for="project">Proyecto</label><select id="project" [(ngModel)]="projectId"><option value="1">Materiales sustentables</option><option value="2">Energía solar en comunidades rurales</option></select></div> }
+            @if (statuses.length) { <div class="tabs"><button type="button" [class.active]="status === 'Todos'" (click)="status = 'Todos'">Todos</button>@for (item of statuses; track item) { <button type="button" [class.active]="status === item" (click)="status = item">{{ item }}</button> }</div> }
+            <div class="filters"><input aria-label="Buscar registros" [(ngModel)]="search" placeholder="⌕ Buscar por nombre, responsable o estado…"><span>{{ visibleRows.length }} resultados</span></div>
+            @if (section === 'proposals' || section === 'projects') {
+              <div class="record-cards">@for (row of visibleRows; track row.id) { <article class="record-card"><div><h2>{{ row.cells[0] }}</h2><p>Responsable: {{ row.cells[1] }}</p><small>{{ section === 'projects' ? 'Avance: ' : 'Creada: ' }}{{ row.cells[3] }}</small>@if (section === 'projects') { <progress max="100" [value]="row.id === 1 ? 50 : 75"></progress> }</div><span class="badge" [class.warning]="row.id === 1" [class.danger]="section === 'proposals' && row.id === 2">{{ row.cells[2] }}</span><button class="secondary" type="button" (click)="openDetail(row)">Ver detalle</button></article> } @empty { <div class="empty">No hay registros para los filtros seleccionados.</div> }</div>
+            } @else {
+              <section class="table-panel"><div class="table-scroll"><table><thead><tr>@for (column of view.columns; track column) { <th>{{ column }}</th> }<th>Acciones</th></tr></thead><tbody>@for (row of visibleRows; track row.id) { <tr>@for (cell of row.cells; track $index; let i = $index) { <td>@if (['Estado','Decisión','Acceso','Participación'].includes(view.columns[i])) { <span class="badge" [class.warning]="cell === 'Pendiente' || cell === 'En revisión'" [class.danger]="cell === 'Inactivo' || cell === 'Cambios solicitados'">{{ cell }}</span> } @else { {{ cell }} }</td> }<td><button class="text-button" type="button" (click)="openDetail(row)">Ver detalle →</button></td></tr> } @empty { <tr><td [attr.colspan]="view.columns.length + 1" class="empty">No hay registros para los filtros seleccionados.</td></tr> }</tbody></table></div><footer class="table-footer">Mostrando {{ visibleRows.length }} registros de ejemplo <span>Página 1 de 1</span></footer></section>
+            }
+            @if (section === 'reports') { <div class="actions">@for (item of availableActions; track item.endpoint) { <button class="primary" type="button" (click)="openForm(item)">{{ item.label }}</button> }</div> }
+            @if (section === 'evaluations' && role === 'coordinator') { <div class="actions"><button type="button" class="primary" (click)="openForm(availableActions[0])">Asignar evaluador</button></div> }
+          }
+        } @else { <section class="panel"><h1>Vista no encontrada</h1><a routerLink="/app/dashboard">Volver al inicio</a></section> }
+      </main>
+    </div>
+  }
+  @if (action) {
+    <div class="modal-backdrop" (click)="closeForm()" (keydown.escape)="closeForm()">
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" (click)="$event.stopPropagation()" tabindex="-1">
+        <header><h2 id="modal-title">{{ action.label }}</h2><button type="button" (click)="closeForm()" aria-label="Cerrar formulario">×</button></header>
+        <p class="muted">Demostración: los datos se validan sin enviarse al servidor.</p>
+        <form #form="ngForm" (ngSubmit)="submitForm(form)">
+          @if (!selected && section !== 'users' && section !== 'institutional' && action.endpoint !== 'proposals/create.php') { <label for="context">{{ section === 'evaluations' ? 'Propuesta' : 'Proyecto' }}</label><select id="context" name="context" [(ngModel)]="values['context']" required><option value="">Seleccionar…</option><option value="1">{{ section === 'evaluations' ? 'Energía renovable en comunidades rurales' : 'Materiales sustentables' }}</option></select> }
+          @for (field of action.fields; track field.key) {
+            @if (field.key !== 'responsible_researcher_id' || role === 'student') {
+              <label [for]="field.key">{{ field.label }}{{ isRequired(field) ? ' *' : ' (opcional)' }}</label>
+              @if (isSelect(field)) { <select [id]="field.key" [name]="field.key" [(ngModel)]="values[field.key]" [required]="isRequired(field)" [multiple]="field.key === 'activity_ids' || field.key === 'project_ids'"><option value="" disabled>Seleccionar…</option>@for (option of options(field); track option.value) { <option [value]="option.value">{{ option.label }}</option> }</select> }
+              @else if (field.type === 'textarea' || field.type === 'optional') { <textarea [id]="field.key" [name]="field.key" rows="3" [(ngModel)]="values[field.key]" [required]="isRequired(field)"></textarea> }
+              @else if (field.type === 'file') { <input [id]="field.key" type="file" (change)="chooseFile($event)" [required]="isRequired(field)"> }
+              @else { <input [id]="field.key" [name]="field.key" [type]="field.type" [(ngModel)]="values[field.key]" [required]="isRequired(field)" [attr.autocomplete]="field.type === 'password' ? 'new-password' : null"> }
+            }
+          }
+          @if (!action.fields.length) { <p>Confirmar la operación para <strong>{{ selected?.cells?.[0] }}</strong>.</p><p class="muted">Esta vista previa no modifica registros.</p> }
+          @if (formError) { <p class="error" role="alert">{{ formError }}</p> }
+          <footer><button class="secondary" type="button" (click)="closeForm()">Cancelar</button><button class="primary" type="submit">Validar demostración</button></footer>
+        </form>
+      </section>
+    </div>
+  }
+</ion-content>
