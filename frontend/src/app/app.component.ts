@@ -1,11 +1,16 @@
+// Conecta la aplicación con los diagnósticos de la API.
+
 import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular';
+import { ApiDiagnosticsService } from './services/api-diagnostics';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  styleUrls: ['app.component.scss'],
+  standalone: false,
 })
 export class AppComponent {
-  constructor() {}
+
+  // Dependencias e inicio
+  constructor(public diagnostics: ApiDiagnosticsService) {}
 }

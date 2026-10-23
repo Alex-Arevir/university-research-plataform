@@ -1,29 +1,29 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
+// Define los estilos compartidos de la aplicación.
 
-/* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+// Estilos principales
 
-/* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+// Estilos de Ionic
+@import '@ionic/angular/css/core.css';
 
-/* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+// Estructura y tipografía
+@import '@ionic/angular/css/normalize.css';
+
+@import '@ionic/angular/css/structure.css';
+
+@import '@ionic/angular/css/typography.css';
+
+@import '@ionic/angular/css/display.css';
+
+// Utilidades de estilos
+@import '@ionic/angular/css/padding.css';
+
+@import '@ionic/angular/css/float-elements.css';
+
+@import '@ionic/angular/css/text-alignment.css';
+
+@import '@ionic/angular/css/text-transformation.css';
+
+@import '@ionic/angular/css/flex-utils.css';
 
 /**
  * Ionic Dark Mode
@@ -35,3 +35,118 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+// Botones
+ion-button:not([fill='outline']):not([fill='clear']):not([color='danger']),
+ion-modal
+  ion-button:not([fill='outline']):not([fill='clear']):not([color='danger']) {
+  --background: #ffc526;
+  --background-hover: #ffd24f;
+  --background-activated: #ffb800;
+  --color: #101214;
+  --border-radius: 13px;
+  --box-shadow: 0 10px 24px rgba(255, 197, 38, 0.12);
+  min-height: 46px;
+  font-weight: 900;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+ion-button[fill='outline']:not([color='danger']),
+ion-modal ion-button[fill='outline']:not([color='danger']) {
+  --background: transparent;
+  --background-hover: rgba(255, 197, 38, 0.1);
+  --background-activated: rgba(255, 197, 38, 0.16);
+  --color: #ffc526;
+  --border-color: #ffc526;
+  --border-style: solid;
+  --border-width: 2px;
+  --border-radius: 13px;
+  --box-shadow: none;
+  min-height: 46px;
+  font-weight: 900;
+  text-transform: none;
+}
+
+ion-button[fill='clear']:not([color='danger']),
+ion-modal ion-button[fill='clear']:not([color='danger']) {
+  --background: transparent;
+  --background-hover: rgba(255, 197, 38, 0.1);
+  --background-activated: rgba(255, 197, 38, 0.16);
+  --color: #ffc526;
+  --box-shadow: none;
+  font-weight: 800;
+  text-transform: none;
+}
+
+ion-button[color='danger'],
+ion-modal ion-button[color='danger'] {
+  --background: transparent;
+  --background-hover: rgba(255, 75, 85, 0.1);
+  --background-activated: rgba(255, 75, 85, 0.16);
+  --color: #ff4b55;
+  --border-color: #ff4b55;
+  --border-style: solid;
+  --border-width: 2px;
+  --border-radius: 13px;
+  --box-shadow: none;
+  font-weight: 900;
+  text-transform: none;
+}
+
+ion-button[color='danger'][fill='clear'],
+ion-modal ion-button[color='danger'][fill='clear'] {
+  --border-width: 0;
+}
+
+/* Los botones deshabilitados siguen siendo visibles. */
+ion-button.button-disabled,
+ion-button[disabled],
+ion-modal ion-button.button-disabled,
+ion-modal ion-button[disabled] {
+  opacity: 0.52;
+}
+
+/* Botones principales de formularios/modales: mismo porte que Login. */
+ion-button[expand='block']:not([fill='outline']):not([fill='clear']),
+ion-modal ion-button[expand='block']:not([fill='outline']):not([fill='clear']) {
+  min-height: 52px;
+  --border-radius: 13px;
+}
+
+
+/* Presentación administrativa para las pantallas existentes.
+   Solo afecta a la apariencia; conserva las APIs y los formularios Ionic. */
+@media (min-width: 900px) {
+  ion-router-outlet > :not(app-home):not(app-login) ion-content:not(ion-modal ion-content)::part(scroll) {
+    max-width: 1320px;
+    margin-inline: auto;
+    padding: 34px 34px 85px;
+  }
+}
+ion-router-outlet > :not(app-home):not(app-login) ion-content {
+  --background: #f3f6f5;
+  --color: #172022;
+}
+ion-router-outlet > :not(app-home):not(app-login) ion-toolbar {
+  --background: #151c1e;
+  --color: #ffffff;
+  --border-color: #283234;
+}
+ion-router-outlet > :not(app-home):not(app-login) ion-card {
+  --background: #ffffff;
+  color: #172022;
+  border: 1px solid #e2e8e7;
+  box-shadow: 0 8px 24px rgba(18,30,30,.045);
+}
+ion-router-outlet > :not(app-home):not(app-login) ion-card-title,
+ion-router-outlet > :not(app-home):not(app-login) ion-label h2 { color: #172022 !important; }
+ion-router-outlet > :not(app-home):not(app-login) ion-card-content { color: #4b585b; }
+ion-router-outlet > :not(app-home):not(app-login) ion-list { background: transparent; }
+ion-router-outlet > :not(app-home):not(app-login) ion-item {
+  --background: #ffffff;
+  --color: #172022;
+  --border-color: #e2e8e7;
+  border-color: #e2e8e7;
+}
+ion-router-outlet > :not(app-home):not(app-login) ion-label p { color: #657175 !important; }
