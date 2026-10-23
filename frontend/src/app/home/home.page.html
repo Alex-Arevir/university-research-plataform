@@ -1,39 +1,20 @@
-<!-- Panel principal de La Obra. Conserva las rutas y los permisos por rol. -->
-<ion-header class="obra-topbar"><ion-toolbar><ion-title>La Obra <span class="brand-divider">/ Panel de control</span></ion-title></ion-toolbar></ion-header>
-<ion-content class="obra-home">
-  <div class="workspace">
-    <aside class="sidebar" aria-label="Navegación principal">
-      <div class="sidebar-brand"><span class="brand-symbol">◆</span><div><strong>LA OBRA</strong><small>Administración y punto de venta</small></div></div>
-      <p class="sidebar-caption">MENÚ PRINCIPAL</p>
-      <a routerLink="/home" class="nav-link selected">⌂ <span>Panel principal</span></a>
-      <a routerLink="/sales" class="nav-link">▤ <span>Ventas y pedidos</span></a>
-      <a routerLink="/expenses" class="nav-link">◫ <span>Gastos</span></a>
-      <a routerLink="/waste" class="nav-link">◈ <span>Mermas y pérdidas</span></a>
-      <ng-container *ngIf="user?.role === 'admin'">
-        <a routerLink="/products" class="nav-link">▦ <span>Productos</span></a>
-        <a routerLink="/inputs" class="nav-link">▥ <span>Insumos</span></a>
-        <a routerLink="/purchases" class="nav-link">▣ <span>Compras</span></a>
-        <a routerLink="/users" class="nav-link">♙ <span>Usuarios</span></a>
-        <a routerLink="/reports" class="nav-link">▥ <span>Reportes</span></a>
-      </ng-container>
-      <div class="sidebar-bottom"><a routerLink="/profile" class="nav-link">◉ <span>Mi perfil</span></a><a routerLink="/data-origins" class="nav-link">◇ <span>Orígenes de datos</span></a></div>
-    </aside>
-    <main class="dashboard">
-      <div class="dashboard-heading"><div><span class="eyebrow">ESPACIO DE TRABAJO</span><h1>Hola, {{ user?.name }}</h1><p>Bienvenido al sistema de administración de La Obra.</p></div><div class="user-chip"><span class="user-avatar">{{ (user?.name || 'U').charAt(0).toUpperCase() }}</span><div><strong>{{ user?.username }}</strong><small>{{ user?.role === 'admin' ? 'Administrador' : 'Empleado' }}</small></div></div></div>
-      <div class="welcome-banner"><div><span class="banner-tag">LA OBRA · SISTEMA DE GESTIÓN</span><h2>{{ user?.role === 'admin' ? 'Controla tu operación desde un solo lugar' : 'Tu espacio de trabajo diario' }}</h2><p>Accede rápidamente a los módulos disponibles para tu cuenta.</p></div><span class="banner-mark" aria-hidden="true">◆</span></div>
-      <div class="section-heading"><div><h2>Accesos rápidos</h2><p>Selecciona el módulo con el que deseas trabajar.</p></div></div>
-      <div class="module-grid">
-        <a routerLink="/sales" class="module-card"><span class="module-icon">▤</span><strong>Ventas y pedidos</strong><small>Registrar y consultar operaciones</small><span class="module-arrow">↗</span></a>
-        <a routerLink="/expenses" class="module-card"><span class="module-icon">◫</span><strong>Gastos</strong><small>Movimientos y salidas</small><span class="module-arrow">↗</span></a>
-        <a routerLink="/waste" class="module-card"><span class="module-icon">◈</span><strong>Mermas</strong><small>Registro de pérdidas</small><span class="module-arrow">↗</span></a>
-        <ng-container *ngIf="user?.role === 'admin'">
-          <a routerLink="/products" class="module-card"><span class="module-icon">▦</span><strong>Productos</strong><small>Catálogo y disponibilidad</small><span class="module-arrow">↗</span></a>
-          <a routerLink="/purchases" class="module-card"><span class="module-icon">▣</span><strong>Compras</strong><small>Abastecimiento y costos</small><span class="module-arrow">↗</span></a>
-          <a routerLink="/reports" class="module-card"><span class="module-icon">▥</span><strong>Reportes</strong><small>Información de la operación</small><span class="module-arrow">↗</span></a>
-        </ng-container>
-      </div>
-      <section *ngIf="user?.role === 'admin'" class="more-section"><div class="section-heading"><div><h2>Administración</h2><p>Configuración y control de los recursos del sistema.</p></div></div><div class="management-links"><a routerLink="/users">Gestión de usuarios <span>↗</span></a><a routerLink="/categories">Categorías <span>↗</span></a><a routerLink="/inputs">Insumos <span>↗</span></a><a routerLink="/payment-methods">Métodos de pago <span>↗</span></a><a routerLink="/recipes">Recetas y costos <span>↗</span></a></div></section>
-      <p class="dashboard-footnote">Las opciones disponibles dependen de los permisos de tu cuenta.</p>
-    </main>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Blank</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <strong>Ready to create an app?</strong>
+    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
   </div>
 </ion-content>
