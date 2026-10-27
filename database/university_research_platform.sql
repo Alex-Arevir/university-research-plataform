@@ -1,4 +1,5 @@
-/*este sql es para importar por si schema.sql sigue sin funcionar directamente.*/
+/*este sql es para importar por si schema.sql sigue sin funcionar directamente.
+*/
 
 
 
