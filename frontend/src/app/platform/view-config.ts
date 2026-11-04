@@ -136,6 +136,12 @@ export const VIEWS: View[] = [
         ]
       },
       {
+        "label": "Asignar evaluador",
+        "endpoint": "evaluations/assign.php",
+        "roles": ["coordinator"],
+        "fields": [{"key": "evaluator_id", "label": "Evaluador", "type": "evaluator"}]
+      },
+      {
         "label": "Archivar / desarchivar",
         "endpoint": "proposals/archive.php",
         "roles": [
