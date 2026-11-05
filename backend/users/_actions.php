@@ -12,7 +12,7 @@ if ($action==='create') {
     $newRole=requiredText($body,'role',30);
     if (!in_array($newRole,authRoles(),true)) fail(422,'Rol inválido.');
     $password=requiredText($body,'password',72);
-    if (strlen($password)<8) fail(422,'Usa al menos ocho caracteres.');
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,72}$/s',$password)) fail(422,'Usa 8 a 72 caracteres con mayúscula, minúscula y número.');
     $email=trim((string)($body['email']??''));
     if ($email!=='' && !filter_var($email,FILTER_VALIDATE_EMAIL)) fail(422,'Correo inválido.');
     query($db,'INSERT INTO users (name,username,email,password_hash,role) VALUES (?,?,?,?,?)',
@@ -41,11 +41,16 @@ if ($action==='create') {
             $newRole=requiredText($body,'role',30);
             if (!in_array($newRole,authRoles(),true)) fail(422,'Rol inválido.');
             if ($id===$actor && $newRole!==$role) fail(409,'No puedes cambiar tu propio rol.');
+            if ($newRole!==$target['role']) {
+                if ($newRole!=='researcher' && (int)query($db,'SELECT (SELECT COUNT(*) FROM projects WHERE responsible_researcher_id=? AND status<>"finalized")+(SELECT COUNT(*) FROM proposals WHERE responsible_researcher_id=? AND status NOT IN ("approved","rejected"))',[$id,$id])->fetchColumn()) fail(409,'Reasigna primero los proyectos y propuestas pendientes de este investigador.');
+                if (!in_array($newRole,['student','researcher'],true) && (int)query($db,'SELECT COUNT(*) FROM participants t JOIN projects p ON p.id=t.project_id WHERE t.user_id=? AND t.is_active=1 AND p.status<>"finalized"',[$id])->fetchColumn()) fail(409,'Retira o reasigna primero la participación activa de esta cuenta.');
+                if ($newRole!=='evaluator' && (int)query($db,'SELECT COUNT(*) FROM evaluation_assignments a JOIN proposals p ON p.id=a.proposal_id WHERE a.evaluator_id=? AND a.is_active=1 AND p.status IN ("under_evaluation","changes_requested_evaluator")',[$id])->fetchColumn()) fail(409,'La cuenta tiene evaluaciones pendientes.');
+            }
             query($db,'UPDATE users SET role=? WHERE id=?',[$newRole,$id]);
             break;
         case 'reset-password':
             $password=requiredText($body,'password',72);
-            if (strlen($password)<8) fail(422,'Usa al menos ocho caracteres.');
+            if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,72}$/s',$password)) fail(422,'Usa 8 a 72 caracteres con mayúscula, minúscula y número.');
             query($db,'UPDATE users SET password_hash=? WHERE id=?',[password_hash($password,PASSWORD_DEFAULT),$id]);
             break;
         default:

@@ -92,3 +92,6 @@ progress { width: 100%; height: 9px; border: 0; border-radius: 8px; display: blo
 /* Estado de las solicitudes de autenticación y rol de la cuenta. */
 button:disabled { cursor: wait; opacity: .65; }
 .profile-role { display: block; margin-top: 5px; }
+
+.message p { white-space: pre-wrap; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }

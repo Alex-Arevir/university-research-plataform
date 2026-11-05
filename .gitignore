@@ -1,3 +1,7 @@
-/backend/config/database.local.php
 node_modules/
+www/
 .angular/
+backend/config/database.local.php
+backend/config/ai.local.php
+*.log
+backend/config/database.local.backup-*.php

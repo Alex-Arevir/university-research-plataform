@@ -1,4 +1,4 @@
-/* Define las vistas y formularios de demostración siguiendo los endpoints. */
+/* Define las vistas y formularios siguiendo los endpoints. */
 export type Role = 'student' | 'researcher' | 'evaluator' | 'coordinator';
 export interface Field { key: string; label: string; type: string; }
 export interface Action { label: string; endpoint: string; roles: string[]; fields: Field[]; }
@@ -22,35 +22,7 @@ export const VIEWS: View[] = [
       "Estado",
       "Fecha"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "IA para el aprendizaje personalizado",
-          "Dra. Laura Méndez",
-          "En revisión del investigador",
-          "20 oct 2026"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Materiales sustentables para construcción local",
-          "Dr. Carlos Ruiz",
-          "Cambios solicitados",
-          "18 oct 2026"
-        ]
-      },
-      {
-        "id": 3,
-        "cells": [
-          "Materiales sustentables — propuesta aprobada",
-          "Dr. Carlos Ruiz",
-          "Aprobada",
-          "10 oct 2026"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Crear propuesta",
@@ -138,8 +110,16 @@ export const VIEWS: View[] = [
       {
         "label": "Asignar evaluador",
         "endpoint": "evaluations/assign.php",
-        "roles": ["coordinator"],
-        "fields": [{"key": "evaluator_id", "label": "Evaluador", "type": "evaluator"}]
+        "roles": [
+          "coordinator"
+        ],
+        "fields": [
+          {
+            "key": "evaluator_id",
+            "label": "Evaluador",
+            "type": "evaluator"
+          }
+        ]
       },
       {
         "label": "Archivar / desarchivar",
@@ -152,6 +132,25 @@ export const VIEWS: View[] = [
             "key": "archived",
             "label": "Archivar",
             "type": "boolean"
+          }
+        ]
+      },
+      {
+        "label": "Emitir evaluación",
+        "endpoint": "evaluations/submit.php",
+        "roles": [
+          "evaluator"
+        ],
+        "fields": [
+          {
+            "key": "decision",
+            "label": "Decisión",
+            "type": "review"
+          },
+          {
+            "key": "observations",
+            "label": "Observaciones",
+            "type": "textarea"
           }
         ]
       }
@@ -171,35 +170,7 @@ export const VIEWS: View[] = [
       "Rol",
       "Estado"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Ana Torres",
-          "ana.torres",
-          "Estudiante",
-          "Activo"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Laura Méndez",
-          "laura.mendez",
-          "Investigador",
-          "Activo"
-        ]
-      },
-      {
-        "id": 3,
-        "cells": [
-          "Carlos Vega",
-          "carlos.vega",
-          "Evaluador",
-          "Inactivo"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Crear usuario",
@@ -325,26 +296,7 @@ export const VIEWS: View[] = [
       "Decisión",
       "Fecha"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Energía renovable en comunidades rurales",
-          "Ana Torres",
-          "Pendiente",
-          "20 oct 2026"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Impacto social de la inteligencia artificial",
-          "Miguel Santos",
-          "Cambios solicitados",
-          "18 oct 2026"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Asignar evaluador",
@@ -397,26 +349,7 @@ export const VIEWS: View[] = [
       "Estado",
       "Avance"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Materiales sustentables",
-          "Dr. Carlos Ruiz",
-          "Activo",
-          "50 %"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Energía solar en comunidades rurales",
-          "Dra. Laura Méndez",
-          "En cierre",
-          "75 %"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Cambiar investigador",
@@ -450,35 +383,7 @@ export const VIEWS: View[] = [
       "Participación",
       "Ingreso"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Jazmín Montes",
-          "Estudiante",
-          "Activa",
-          "10 oct 2026"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Carlos Ruiz",
-          "Investigador responsable",
-          "Activa",
-          "10 oct 2026"
-        ]
-      },
-      {
-        "id": 3,
-        "cells": [
-          "Miguel Santos",
-          "Estudiante",
-          "Retirada",
-          "12 oct 2026"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Agregar participante",
@@ -531,44 +436,7 @@ export const VIEWS: View[] = [
       "Estado",
       "Fecha límite"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Revisión de literatura",
-          "Jazmín Montes",
-          "Pendiente",
-          "23 oct 2026"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Borrador de metodología",
-          "Jazmín Montes",
-          "En progreso",
-          "25 oct 2026"
-        ]
-      },
-      {
-        "id": 3,
-        "cells": [
-          "Resultados del experimento",
-          "Ana Torres",
-          "En revisión",
-          "28 oct 2026"
-        ]
-      },
-      {
-        "id": 4,
-        "cells": [
-          "Definición del problema",
-          "Jazmín Montes",
-          "Completada",
-          "18 oct 2026"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Crear actividad",
@@ -713,26 +581,7 @@ export const VIEWS: View[] = [
       "Actividades",
       "Estado"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Marco teórico terminado",
-          "30 oct 2026",
-          "2 actividades",
-          "Pendiente"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Definición del proyecto",
-          "18 oct 2026",
-          "1 actividad",
-          "Alcanzado"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Crear hito",
@@ -808,35 +657,7 @@ export const VIEWS: View[] = [
       "Versión",
       "Acceso"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Plan de investigación.pdf",
-          "Jazmín Montes",
-          "v2",
-          "Disponible"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Metodología.pdf",
-          "Ana Torres",
-          "v1",
-          "Bloqueado"
-        ]
-      },
-      {
-        "id": 3,
-        "cells": [
-          "Resultados internos.pdf",
-          "Carlos Ruiz",
-          "v3",
-          "Restringido"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Subir documento",
@@ -851,6 +672,21 @@ export const VIEWS: View[] = [
             "label": "Título",
             "type": "text"
           },
+          {
+            "key": "file",
+            "label": "Archivo",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "label": "Subir nueva versión",
+        "endpoint": "documents/upload-version.php",
+        "roles": [
+          "student",
+          "researcher"
+        ],
+        "fields": [
           {
             "key": "file",
             "label": "Archivo",
@@ -933,26 +769,7 @@ export const VIEWS: View[] = [
       "Avance",
       "Indicador"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Materiales sustentables",
-          "2 / 4",
-          "50 %",
-          "Próxima entrega"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Energía solar en comunidades rurales",
-          "3 / 4",
-          "75 %",
-          "Normal"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": []
   },
   {
@@ -970,26 +787,7 @@ export const VIEWS: View[] = [
       "Avance",
       "Estado"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Materiales sustentables",
-          "Dr. Carlos Ruiz",
-          "50 %",
-          "Activo"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Energía solar en comunidades rurales",
-          "Dra. Laura Méndez",
-          "75 %",
-          "En cierre"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Reporte del proyecto",
@@ -1042,26 +840,7 @@ export const VIEWS: View[] = [
       "Estado",
       "Fecha"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Energía solar en comunidades rurales",
-          "Dra. Laura Méndez",
-          "Pendiente",
-          "20 oct 2026"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Sistema de captación pluvial",
-          "Dr. Carlos Ruiz",
-          "Cambios solicitados",
-          "17 oct 2026"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Solicitar cierre",
@@ -1115,26 +894,7 @@ export const VIEWS: View[] = [
       "Fecha",
       "Estado"
     ],
-    "rows": [
-      {
-        "id": 1,
-        "cells": [
-          "Lineamientos de investigación",
-          "v1",
-          "10 oct 2026",
-          "Lista"
-        ]
-      },
-      {
-        "id": 2,
-        "cells": [
-          "Guía para evaluar propuestas",
-          "v2",
-          "15 oct 2026",
-          "Lista"
-        ]
-      }
-    ],
+    "rows": [],
     "actions": [
       {
         "label": "Agregar fuente",

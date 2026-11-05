@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+ini_set('display_errors','0');
+ini_set('log_errors','1');
+
 /* Comparte la configuración HTTP, la cookie y la validación de sesiones y roles. */
 
 function authJsonResponse(int $httpCode, array $data): void

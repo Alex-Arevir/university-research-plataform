@@ -1,27 +1,29 @@
 {
-  "name": "research-university-frontend",
+  "name": "research-university",
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "ng serve --host=localhost --port=8100",
-    "build": "ng build"
+    "start": "ng serve --host 0.0.0.0 --port 8100",
+    "build": "ng build",
+    "test:api": "python3 ../tests/integration.py",
+    "build:xampp": "ng build --base-href /research-university/frontend/www/browser/"
   },
   "dependencies": {
-    "@angular/common": "20.3.35",
-    "@angular/compiler": "20.3.35",
-    "@angular/core": "20.3.35",
-    "@angular/forms": "20.3.35",
-    "@angular/platform-browser": "20.3.35",
-    "@angular/router": "20.3.35",
-    "@ionic/angular": "8.8.19",
-    "rxjs": "7.8.2",
-    "tslib": "2.9.1",
-    "zone.js": "0.15.1"
+    "@angular/common": "^20.3.0",
+    "@angular/compiler": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/forms": "^20.3.0",
+    "@angular/platform-browser": "^20.3.0",
+    "@angular/router": "^20.3.0",
+    "@ionic/angular": "^8.7.0",
+    "ionicons": "^8.0.13",
+    "rxjs": "^7.8.2",
+    "tslib": "^2.8.1",
+    "zone.js": "~0.15.1"
   },
   "devDependencies": {
-    "@angular/build": "20.3.35",
-    "@angular/cli": "20.3.35",
-    "@angular/compiler-cli": "20.3.35",
-    "typescript": "5.8.3"
+    "@angular/build": "^20.3.0",
+    "@angular/cli": "^20.3.0",
+    "typescript": "~5.9.2"
   }
 }

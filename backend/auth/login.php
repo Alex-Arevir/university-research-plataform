@@ -59,6 +59,6 @@ try {
         $pdo->rollBack();
     }
     authEndSession();
-    error_log('Authentication login failed.');
+    error_log('Authentication login failed: '.$e->getMessage());
     authJsonResponse(500, ['message' => 'Internal server error.']);
 }

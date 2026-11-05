@@ -1,8 +1,6 @@
 {
   "version": 1,
-  "cli": {
-    "analytics": false
-  },
+  "newProjectRoot": "projects",
   "projects": {
     "app": {
       "projectType": "application",
@@ -12,23 +10,28 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "src/main.ts",
+            "outputPath": "www",
             "index": "src/index.html",
-            "tsConfig": "tsconfig.json",
-            "outputPath": "dist/app",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
+            "tsConfig": "tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "public",
+                "output": "/"
               }
             ],
             "styles": [
-              "src/theme/variables.scss",
-              "src/global.scss"
+              "src/global.scss",
+              "src/theme/variables.scss"
             ]
           },
           "configurations": {
@@ -38,7 +41,8 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
+              ],
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
@@ -51,6 +55,11 @@
           "builder": "@angular/build:dev-server",
           "options": {
             "buildTarget": "app:build:development"
+          },
+          "configurations": {
+            "development": {
+              "buildTarget": "app:build:development"
+            }
           }
         }
       }

@@ -54,6 +54,8 @@ try {
         require __DIR__.'/users/_actions.php';
     }
 
+    if (!in_array($module, ['proposals','evaluations'], true)) { require __DIR__.'/project_actions.php'; }
+
     $scope = [
         'student'=>['p.author_id=?',[$actor]],
         'researcher'=>['(p.author_id=? OR p.responsible_researcher_id=?)',[$actor,$actor]],
@@ -61,6 +63,10 @@ try {
         'coordinator'=>['1=1',[]],
     ];
     [$where,$args]=$scope[$role];
+    if (in_array($role,['student','researcher'],true)) {
+        $where='('.$where.' OR EXISTS(SELECT 1 FROM projects pr WHERE pr.proposal_id=p.id AND (pr.responsible_researcher_id=? OR EXISTS(SELECT 1 FROM participants pt WHERE pt.project_id=pr.id AND pt.user_id=? AND pt.is_active=1))))';
+        $args[]=$actor; $args[]=$actor;
+    }
     if ($action==='assignments' && !isset($body['proposal_id'])) {
         $filter = $role==='evaluator' ? "$where AND a.evaluator_id=? AND a.is_active=1" : $where;
         if ($role==='evaluator') $args[]=$actor;
@@ -120,6 +126,23 @@ try {
     if ($archived && !in_array($action,['archive','assignments'],true)) fail(409,'La propuesta está archivada.');
 
     switch ($action) {
+        case 'submit':
+            if ($module!=='evaluations' || $role!=='evaluator') fail(403,'Solo el evaluador asignado puede evaluar.');
+            if ($before!=='under_evaluation') fail(409,'La propuesta no está en evaluación.');
+            $decision=requiredText($body,'decision',30);
+            $map=['approved'=>'approved','changes_requested'=>'changes_requested_evaluator','rejected'=>'rejected'];
+            if (!isset($map[$decision])) fail(422,'Decisión inválida.');
+            $observations=requiredText($body,'observations',65535);
+            query($db,'INSERT INTO evaluations(proposal_id,evaluator_id,decision,observations) VALUES (?,?,?,?)',[$id,$actor,$decision,$observations]);
+            $after=$map[$decision];
+            if ($decision==='approved') {
+                query($db,'INSERT INTO projects(proposal_id,title,responsible_researcher_id) VALUES (?,?,?)',[$id,$proposal['title'],$proposal['responsible_researcher_id']]);
+                $pid=(int)$db->lastInsertId();
+                query($db,'INSERT INTO project_history(project_id,actor_id,entity,entity_id,action,details) VALUES (?,?,?,?,?,?)',[$pid,$actor,'project',$pid,'created_from_proposal',json_encode(['proposal_id'=>$id])]);
+                foreach (array_unique([(int)$proposal['author_id'],(int)$proposal['responsible_researcher_id']]) as $uid) query($db,'INSERT INTO participants(project_id,user_id) VALUES (?,?)',[$pid,$uid]);
+            }
+            $action='evaluation_'.$decision;
+            break;
         case 'update':
         case 'resubmit':
             if ((int)$proposal['author_id']!==$actor) fail(403,'Solo el autor puede corregir.');
@@ -147,7 +170,7 @@ try {
             $decisions=['approved'=>'pending_coordinator','changes_requested'=>'changes_requested_researcher','rejected'=>'rejected'];
             $decision=requiredText($body,'decision',30);
             if (!isset($decisions[$decision])) fail(422,'Decisión inválida.');
-            $observations=$decision==='changes_requested' || !empty($body['observations']) ? requiredText($body,'observations',65535) : null;
+            $observations=requiredText($body,'observations',65535);
             $after=$decisions[$decision];
             query($db,'INSERT INTO proposal_reviews (proposal_id,researcher_id,decision,observations) VALUES (?,?,?,?)',[$id,$actor,$decision,$observations]);
             $action='review_'.$decision;

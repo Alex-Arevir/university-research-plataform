@@ -13,7 +13,7 @@ export class ApiService {
     try {
       const options = { params, withCredentials: true };
       return await firstValueFrom((body ? this.http.post<T>(url, body, options)
-        : this.http.get<T>(url, options)).pipe(timeout(10000)));
+        : this.http.get<T>(url, options)).pipe(timeout(path.startsWith('assistant/') ? 65000 : 15000)));
     } catch (error) {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         await this.router.navigate(['/login'], { replaceUrl: true });
